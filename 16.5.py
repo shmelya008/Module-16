@@ -24,7 +24,10 @@ def admin(request: Request) -> HTMLResponse:
 
 @app.get("/user/{id}")
 def admin(request: Request, id: int) -> HTMLResponse:
-    return templates.TemplateResponse('users.html', {'request': request, 'user': users[id - 1]})
+    for index, d in enumerate(users):
+        if d.get('id') == id:
+            return templates.TemplateResponse('users.html', {'request': request, 'user': users[index]})
+    raise (HTTPException(status_code=404, detail="User was not found"))
 
 
 @app.post("/user/{username}/{age}")
